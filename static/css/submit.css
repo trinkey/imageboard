@@ -1,0 +1,31 @@
+#status {
+  border: 1px dashed;
+  border-radius: 1em;
+  max-width: 15em;
+  padding: 2em 4em;
+  margin: 0 auto 1em auto;
+}
+
+#status h2 {
+  margin-top: 0;
+}
+
+#status p {
+  margin-bottom: -1em;
+}
+
+#status.error {
+  border-color: var(--red);
+}
+
+#status.success {
+  border-color: var(--green);
+}
+
+#status.error h2 {
+  color: var(--red);
+}
+
+#status.success h2 {
+  color: var(--green);
+}

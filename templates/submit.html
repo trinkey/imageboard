@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "/css/submit.css" %}?v={{ VERSION }}">
+{% endblock %}
+
+{% block body %}
+  <h1>File Submission Form</h1>
+
+  <noscript>
+    <h1>You need to enable JavaScript to make this site work!</h1>
+    (this is very important)
+  </noscript>
+
+  <div id="status" hidden></div>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input name="file" id="file" type="file" accept="image/png,image/jpeg,image/gif,video/mp4" required>
+    <input name="content-type" id="content-type" required hidden>
+    <p><small>(png, jpg, gif, and mp4 supported, max size 20mb)</small></p>
+    <button>Submit</button>
+  </form>
+
+  <script href="{% static "/js/submit.js" %}?v={{ VERSION }}"></script>
+{% endblock %}

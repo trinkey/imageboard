@@ -1,0 +1,76 @@
+:root {
+  --rosewater: #f5e0dc;
+  --flamingo: #f2cdcd;
+  --pink: #f5c2e7;
+  --mauve: #cba6f7;
+  --red: #f38ba8;
+  --maroon: #eba0ac;
+  --peach: #fab387;
+  --yellow: #f9e2af;
+  --green: #a6e3a1;
+  --teal: #94e2d5;
+  --sky: #89dceb;
+  --sapphire: #74c7ec;
+  --blue: #89b4fa;
+  --lavender: #b4befe;
+  --text: #cdd6f4;
+  --subtext1: #bac2de;
+  --subtext0: #a6adc8;
+  --overlay2: #9399b2;
+  --overlay1: #7f849c;
+  --overlay0: #6c7086;
+  --surface2: #585b70;
+  --surface1: #45475a;
+  --surface0: #313244;
+  --base: #1e1e2e;
+  --mantle: #181825;
+  --crust: #11111b;
+}
+
+body {
+  background-color: var(--base);
+  color: var(--text);
+  font-family: sans-serif;
+  text-align: center;
+  padding: 3vh 2vw;
+}
+
+input::placeholder {
+  color: var(--subtext0);
+  opacity: 100%;
+}
+
+button,
+input[type="password"],
+input[type="file"]::file-selector-button {
+  background-color: var(--crust);
+  color: var(--text);
+  border: 1px solid var(--surface0);
+  outline: none;
+  padding: 5px 9px;
+  border-radius: 9px;
+  transition: padding 0.25s, margin 0.25s;
+}
+
+button:hover,
+input[type="password"]:hover,
+input[type="file"]::file-selector-button:hover {
+  background-color: var(--mantle);
+}
+
+button:focus,
+input[type="password"]:focus,
+input[type="file"]::file-selector-button:focus {
+  border-color: var(--pink);
+}
+
+button:active,
+input[type="file"]::file-selector-button:active {
+  background-color: var(--base);
+  scale: 95%;
+}
+
+small {
+  font-size: .75em;
+  color: var(--subtext0);
+}

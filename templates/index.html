@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "/css/index.css" %}?v={{ VERSION }}">
+{% endblock %}
+
+{% block body %}
+  <h1>{{ NAME }}</h1>
+  <p>{{ DESCRIPTION }}</p>
+
+  <div id="number">
+    {% for number in TOTAL_POSTS %}
+      <img src="{% static "/img/num/" %}{{ number }}.jpg?v={{ VERSION }}">
+    {% endfor %}
+  </div>
+{% endblock %}
