@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block head %}
+  <link rel="stylesheet" href="{% static "/css/admin.css" %}?v={{ VERSION }}">
+{% endblock %}
+
 {% block body %}
-  reviews so like yeah you got this :3
+  <h1>Admin Page</h1>
+  The place to approve everything
+
+  <i class="spacing small"></i>
+  <div id="post"></div>
+  <form method="POST" hidden id="new">
+    {% csrf_token %}
+    <input name="tag" placeholder="Add tag">
+  </form>
+
+  <div hidden id="url">{% static "/review" %}</div>
+
+  <script src="{% static "/js/admin.js" %}?v={{ VERSION }}"></script>
 {% endblock %}

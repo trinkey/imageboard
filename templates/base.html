@@ -4,8 +4,9 @@
 
 <html>
   <head>
-    <title>{{ TITLE }}</title>
+    <title>{% block title %}{{ TITLE }}{% endblock %}</title>
     <link rel="stylesheet" href="{% static "/css/base.css" %}?v={{ VERSION }}">
+    <link rel="icon" href="{% static "/img/favicon.ico" %}?v={{ VERSION }}" type="image/x-icon">
 
     {% block head %}{% endblock %}
   </head>

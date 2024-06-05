@@ -35,13 +35,22 @@ body {
   padding: 3vh 2vw;
 }
 
+a {
+  color: var(--pink);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 input::placeholder {
   color: var(--subtext0);
   opacity: 100%;
 }
 
 button,
-input[type="password"],
+input:not([type="file"]),
 input[type="file"]::file-selector-button {
   background-color: var(--crust);
   color: var(--text);
@@ -53,13 +62,13 @@ input[type="file"]::file-selector-button {
 }
 
 button:hover,
-input[type="password"]:hover,
+input:not([type="file"]):hover,
 input[type="file"]::file-selector-button:hover {
   background-color: var(--mantle);
 }
 
 button:focus,
-input[type="password"]:focus,
+input:not([type="file"]):focus,
 input[type="file"]::file-selector-button:focus {
   border-color: var(--pink);
 }
@@ -73,4 +82,22 @@ input[type="file"]::file-selector-button:active {
 small {
   font-size: .75em;
   color: var(--subtext0);
+}
+
+.spacing {
+  display: block;
+  opacity: 0;
+}
+
+.spacing:not(:has(.small, .large)),
+.spacing.small {
+  height: 2em;
+}
+
+.spacing.medium {
+  height: 4em;
+}
+
+.spacing.large {
+  height: 8em;
 }

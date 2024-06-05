@@ -14,4 +14,13 @@
       <img src="{% static "/img/num/" %}{{ number }}.jpg?v={{ VERSION }}">
     {% endfor %}
   </div>
+
+  <p>
+    <form action="/search">
+      <input name="q" placeholder="Search...">
+    </form>
+  </p>
+
+  <i class="spacing small"></i>
+  <a href="/submit">Submit your own images</a>
 {% endblock %}

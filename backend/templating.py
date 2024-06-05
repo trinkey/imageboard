@@ -1,7 +1,8 @@
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
+from django.db import IntegrityError
 from ensure_file import ensure_file as ef
-from db.models import Image, UnderReview
+from db.models import Image, UnderReview, Tag
 
 import config
 import random
@@ -14,15 +15,17 @@ CONTENT_TYPE_MAP = {
     "video/mp4": ".mp4"
 }
 
-def render_template(request, file: str, **kwargs: str) -> HttpResponse:
+def render_template(request, file: str, **kwargs) -> HttpResponse:
     context = {
         "NAME": config.SITE_NAME,
         "DESCRIPTION": config.SITE_DESCRIPTION,
+        "TITLE": config.SITE_NAME,
+
         "VERSION": str(random.random()),
         "TOTAL_POSTS": str(Image.objects.count())
     }
 
-    for key, val in kwargs:
+    for key, val in kwargs.items():
         context[key] = val
 
     return HttpResponse(
@@ -83,9 +86,20 @@ def submit_file(request) -> HttpResponse:
         ef(config.IMAGE_SAVE_PATH / f"review/{file_hash}{CONTENT_TYPE_MAP[content_type]}", default_value=raw_data)
         return HttpResponseRedirect("/submit?reason=success", status=302)
 
-    return render_template(request, "submit.html")
+    return render_template(
+        request, "submit.html",
+        TITLE = f"Submit - {config.SITE_NAME}"
+    )
 
 def admin_page(request) -> HttpResponse:
     if "token" in request.COOKIES and request.COOKIES["token"] in config.VALIDD_ADMONI_PASSWORDSD:
-        return render_template(request, "admin.html")
-    return render_template(request, "admin-login.html")
+        if request.method == "POST":
+            try:
+                Tag.objects.create(
+                    tag=request.POST["tag"].lower().replace("+", "_")
+                )
+            except IntegrityError:
+                ...
+
+        return render_template(request, "admin.html", TITLE=f"Admin - {config.SITE_NAME}")
+    return render_template(request, "admin-login.html", TITLE=f"Admin Log in - {config.SITE_NAME}")
