@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Image',
             fields=[
-                ('post_id', models.PositiveIntegerField(primary_key=True, serialize=False, unique=True)),
+                ('post_id', models.IntegerField(primary_key=True, serialize=False, unique=True)),
                 ('file_hash', models.CharField(max_length=64, unique=True)),
                 ('file_extension', models.CharField(max_length=4)),
                 ('tags', models.JSONField(blank=True, default=list)),

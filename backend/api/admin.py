@@ -1,9 +1,17 @@
-from django.http import HttpRequest
-from db.models import UnderReview, Tag
+from db.models import UnderReview, Tag, Image
+from django.db import IntegrityError
 from ninja import Schema
 
 import config
+import time
 import os
+
+class DelTag(Schema):
+    tags: list[str]
+
+class Approve(Schema):
+    hash: str
+    tags: list[str]
 
 class Remove(Schema):
     hash: str
@@ -15,9 +23,12 @@ def get(request):
     post = UnderReview.objects.first()
 
     if isinstance(post, UnderReview):
+        def key(a):
+            return a["tag"]
+
         return {
             "any": True,
-            "tags": [{"tag": tag.tag, "count": len(tag.posts)} for tag in Tag.objects.all()],
+            "tags": sorted([{"tag": tag.tag, "count": len(tag.posts)} for tag in Tag.objects.all()], key=key),
             "post_info": {
                 "hash": post.file_hash,
                 "ext": post.file_extension
@@ -32,6 +43,9 @@ def get(request):
         }
 
 def remove(request, data: Remove):
+    if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALIDD_ADMONI_PASSWORDSD:
+        return 400, {}
+
     obj = UnderReview.objects.get(
         file_hash=data.hash
     )
@@ -40,3 +54,72 @@ def remove(request, data: Remove):
     obj.delete()
 
     return { "success": True }
+
+def del_tags(request, data: DelTag):
+    if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALIDD_ADMONI_PASSWORDSD:
+        return 400, {}
+
+    for i in data.tags:
+        tag = Tag.objects.get(
+            tag=i
+        )
+
+        for o in tag.posts:
+            x = Image.objects.get(
+                file_hash=o
+            )
+
+            x.tags.remove(o)
+            x.save()
+
+        tag.delete()
+
+    return 200, {
+        "success": True
+    }
+
+def approve(request, data: Approve):
+    if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALIDD_ADMONI_PASSWORDSD:
+        return 400, {}
+
+    try:
+        rev = UnderReview.objects.get(
+            file_hash=data.hash
+        )
+
+        os.rename(config.IMAGE_SAVE_PATH / f"review/{data.hash}{rev.file_extension}", config.IMAGE_SAVE_PATH / f"global/{data.hash}{rev.file_extension}")
+
+        valid_tags = []
+
+        for i in data.tags:
+            try:
+                tag = Tag.objects.get(
+                    tag=i
+                )
+
+                tag.posts.append(data.hash)
+                tag.save()
+
+                valid_tags.append(i)
+
+            except Tag.DoesNotExist:
+                ...
+
+        ext = rev.file_extension
+        rev.delete()
+
+        Image.objects.create(
+            file_hash=data.hash,
+            file_extension=ext,
+            tags=valid_tags,
+            timestamp=round(time.time())
+        )
+
+    except UnderReview.DoesNotExist:
+        ...
+    except IntegrityError:
+        ...
+
+    return {
+        "success": True
+    }

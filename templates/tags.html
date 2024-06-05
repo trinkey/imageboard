@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "/css/search.css" %}">
+{% endblock %}
+
+{% block body %}
+  <p>
+    <form action="/search">
+      <input name="q" placeholder="Search..." value="{{ query }}">
+    </form>
+  </p>
+
+  {% for tag in tags %}
+    <a href="/search?q={{ tag.tag }}">
+      ({{ tag.count }}) {{ tag.tag }}
+    </a>
+  {% empty %}
+    No tags have been created
+  {% endfor %}
+{% endblock %}

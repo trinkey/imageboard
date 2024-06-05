@@ -1,0 +1,17 @@
+.posts {
+  display: flex;
+  gap: 3em;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
+.posts * {
+  max-width: 10em;
+  max-height: 10em;
+  object-fit: contain;
+}
+
+[data-animated] {
+  outline: 0.25em var(--pink) solid;
+}

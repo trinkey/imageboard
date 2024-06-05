@@ -16,6 +16,8 @@
     <input name="tag" placeholder="Add tag">
   </form>
 
+  <p hidden id="del-tags"><button onclick="delTags();">Delete selected tags</button></p>
+
   <div hidden id="url">{% static "/review" %}</div>
 
   <script src="{% static "/js/admin.js" %}?v={{ VERSION }}"></script>

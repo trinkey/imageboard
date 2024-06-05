@@ -1,7 +1,7 @@
 from django.db import models
 
 class Image(models.Model):
-    post_id = models.PositiveIntegerField(unique=True, primary_key=True)
+    post_id = models.IntegerField(unique=True, primary_key=True)
     file_hash = models.CharField(max_length=64, unique=True)
     file_extension = models.CharField(max_length=4)
     tags = models.JSONField(default=list, blank=True)

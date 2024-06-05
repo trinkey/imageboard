@@ -17,9 +17,12 @@
 
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <input name="file" id="file" type="file" accept="image/png,image/jpeg,image/gif,video/mp4" required>
+    <input name="file" id="file" type="file" accept="image/png,image/jpeg,image/gif,video/mp4" multiple required>
     <input name="content-type" id="content-type" required hidden>
-    <p><small>(png, jpg, gif, and mp4 supported, max size 20mb)</small></p>
+    <p>
+      <div><small>(png, jpg, gif, and mp4 supported, max size 20mb each and 20 at a time)</small></div>
+      <small>location data is <strong>NOT</strong> removed automatically</small>
+    </p>
     <button>Submit</button>
   </form>
 

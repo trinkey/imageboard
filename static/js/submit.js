@@ -14,14 +14,7 @@ if (urlParams.get("reason")) {
       break;
 
     case ("type"):
-    case ("invalid"):
       x.innerHTML += "Your file doesn't seem to be a valid png, jpg, gif, or mp4!";
-      break;
-    case ("size"):
-      x.innerHTML += "The file you're trying to upload is too large!";
-      break;
-    case ("exists"):
-      x.innerHTML += "The file you're trying to upload seems to already exist!";
       break;
   }
 
@@ -30,10 +23,25 @@ if (urlParams.get("reason")) {
 }
 
 document.getElementById("file").onchange = function() {
-  document.getElementById("content-type").value = this.files[0].type;
+  const files = this.files;
+  let allFilesValid = true;
 
-  if (this.files[0].size > 1024 * 1024 * 20) { // 20mb
-    alert("File is too big!");
+  if (files.length > 20) {
+    alert("You can only upload up to 20 files at once!");
     this.value = "";
+    return;
+  }
+
+  Array.from(files).forEach(file => {
+    if (file.size > 1024 * 1024 * 20) { // 20mb
+      alert(`File ${file.name} is too big!`);
+      allFilesValid = false;
+      this.value = "";
+      return;
+    }
+  });
+
+  if (allFilesValid) {
+    document.getElementById("content-type").value = Array.from(files).map(file => file.type).join(',');
   }
 };

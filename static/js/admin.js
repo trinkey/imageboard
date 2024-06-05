@@ -2,6 +2,7 @@ let hash;
 
 function load() {
   document.getElementById("new").setAttribute("hidden", "");
+  document.getElementById("del-tags").setAttribute("hidden", "");
 
   fetch("/api/admin")
     .then((response) => (response.json()))
@@ -24,6 +25,7 @@ function load() {
 
         document.getElementById("post").innerHTML = output;
         document.getElementById("new").removeAttribute("hidden");
+        document.getElementById("del-tags").removeAttribute("hidden");
       } else {
         document.getElementById("post").innerText = "All clear! No pending reviews.";
       }
@@ -53,7 +55,46 @@ function save() {
       hash: hash,
       tags: tags
     })
-  });
+  }).then((response) => (response.json()))
+    .then((json) => {
+      if (json.success) {
+        load();
+      } else {
+        throw json
+      }
+    })
+    .catch((err) => {
+      alert(err);
+    });
+}
+
+function delTags() {
+  let tags = [];
+
+  for (const input of document.querySelectorAll("input")) {
+    if (input.checked) {
+      tags.push(input.id.replace("checkbox-", ""));
+    }
+  }
+
+  if (confirm(`Are you SURE you want to delete these ${tags.length} tags?`)) {
+    fetch("/api/admin", {
+      "method": "PATCH",
+      "body": JSON.stringify({
+        tags: tags
+      })
+    }).then((response) => (response.json()))
+      .then((json) => {
+        if (json.success) {
+          load();
+        } else {
+          throw json
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }
 }
 
 function remove() {

@@ -2,7 +2,7 @@ from django.urls import path
 from ninja.renderers import BaseRenderer
 from ninja import NinjaAPI
 
-from .admin import get, remove
+from .admin import get, remove, approve, del_tags
 
 import json
 
@@ -24,7 +24,8 @@ class Renderer(BaseRenderer):
 api = NinjaAPI(renderer=Renderer())
 
 api.get("admin")(get)
-api.post("admin")(get)
+api.post("admin")(approve)
+api.patch("admin")(del_tags)
 api.delete("admin")(remove)
 
 urlpatterns = [

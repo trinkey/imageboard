@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "/css/search.css" %}">
+{% endblock %}
+
+{% block body %}
+  <p>
+    <form>
+      <input name="q" placeholder="Search..." value="{{ query }}">
+    </form>
+  </p>
+
+  <div class="posts">
+    {% for post in posts %}
+      <a href="/post/{{ post.hash }}">
+        {% if post.ext == ".mp4" %}
+          <video title="{{ post.tags }}" data-animated src="{% static "/global/" %}{{ post.hash }}{{ post.ext }}"></video>
+        {% else %}
+          <img title="{{ post.tags }}" {% if post.ext == ".gif" %}data-animated{% endif %} src="{% static "/global/" %}{{ post.hash }}{{ post.ext }}">
+        {% endif %}
+      </a>
+    {% empty %}
+      No posts match the specified query
+    {% endfor %}
+  </div>
+
+  <p>
+    <b>
+      {% if page > 5 %}<a href="/search?q={{ query }}&p={{ pages.0 }}">{{ pages.0 }}</a>{% endif %}
+      {% if page > 4 %}<a href="/search?q={{ query }}&p={{ pages.1 }}">{{ pages.1 }}</a>{% endif %}
+      {% if page > 3 %}<a href="/search?q={{ query }}&p={{ pages.2 }}">{{ pages.2 }}</a>{% endif %}
+      {% if page > 2 %}<a href="/search?q={{ query }}&p={{ pages.3 }}">{{ pages.3 }}</a>{% endif %}
+      {% if page > 1 %}<a href="/search?q={{ query }}&p={{ pages.4 }}">{{ pages.4 }}</a>{% endif %}
+    </b>
+    {{ page }}
+    <b>
+      <a href="/search?q={{ query }}&p={{ pages.5 }}">{{ pages.5 }}</a>
+      <a href="/search?q={{ query }}&p={{ pages.6 }}">{{ pages.6 }}</a>
+      <a href="/search?q={{ query }}&p={{ pages.7 }}">{{ pages.7 }}</a>
+      <a href="/search?q={{ query }}&p={{ pages.8 }}">{{ pages.8 }}</a>
+      <a href="/search?q={{ query }}&p={{ pages.9 }}">{{ pages.9 }}</a>
+    </b>
+  </p>
+{% endblock %}
