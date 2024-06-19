@@ -3,12 +3,14 @@ from ensure_file import ensure_file as ef
 import pathlib
 import hashlib
 
+VERSION = "1.0"
+
 IMAGE_SAVE_PATH = pathlib.Path("./store")
 
 SITE_NAME = "ImageBoard"
 SITE_DESCRIPTION = "owo what's this"
 
-VALIDD_ADMONI_PASSWORDSD =[
+VALID_ADMIN_PASSWORDS =[
     "gay"
 ]
 
@@ -18,5 +20,5 @@ ef(IMAGE_SAVE_PATH, folder=True)
 ef(IMAGE_SAVE_PATH / "global", folder=True)
 ef(IMAGE_SAVE_PATH / "review", folder=True)
 
-for i in range(len(VALIDD_ADMONI_PASSWORDSD)):
-    VALIDD_ADMONI_PASSWORDSD[i] = hashlib.sha256(str.encode(VALIDD_ADMONI_PASSWORDSD[i])).hexdigest()
+for i in range(len(VALID_ADMIN_PASSWORDS)):
+    VALID_ADMIN_PASSWORDS[i] = hashlib.sha256(str.encode(VALID_ADMIN_PASSWORDS[i])).hexdigest()

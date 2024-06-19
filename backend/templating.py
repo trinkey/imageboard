@@ -6,7 +6,6 @@ from db.models import Image, UnderReview, Tag
 from django.core.handlers.wsgi import WSGIRequest
 
 import config
-import random
 import hashlib
 
 from .vars import Vars
@@ -35,7 +34,7 @@ def render_template(request, file: str, **kwargs) -> HttpResponse:
         "DESCRIPTION": config.SITE_DESCRIPTION,
         "TITLE": config.SITE_NAME,
 
-        "VERSION": str(random.random()),
+        "VERSION": config.VERSION,
         "TOTAL_POSTS": str(Image.objects.count()),
         "tags": sorted(output, key=a)
     }
@@ -111,7 +110,7 @@ def submit_file(request) -> HttpResponse:
     )
 
 def admin_page(request) -> HttpResponse:
-    if "token" in request.COOKIES and request.COOKIES["token"] in config.VALIDD_ADMONI_PASSWORDSD:
+    if "token" in request.COOKIES and request.COOKIES["token"] in config.VALID_ADMIN_PASSWORDS:
         if request.method == "POST":
             try:
                 Tag.objects.create(

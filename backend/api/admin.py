@@ -19,7 +19,7 @@ class Remove(Schema):
     hash: str
 
 def get(request):
-    if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALIDD_ADMONI_PASSWORDSD:
+    if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALID_ADMIN_PASSWORDS:
         return 400, {}
 
     post = UnderReview.objects.first()
@@ -45,7 +45,7 @@ def get(request):
         }
 
 def remove(request, data: Remove):
-    if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALIDD_ADMONI_PASSWORDSD:
+    if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALID_ADMIN_PASSWORDS:
         return 400, {}
 
     obj = UnderReview.objects.get(
@@ -60,7 +60,7 @@ def remove(request, data: Remove):
     }
 
 def del_tags(request, data: DelTag):
-    if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALIDD_ADMONI_PASSWORDSD:
+    if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALID_ADMIN_PASSWORDS:
         return 400, {}
 
     for i in data.tags:
@@ -85,7 +85,7 @@ def del_tags(request, data: DelTag):
     }
 
 def approve(request, data: Approve):
-    if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALIDD_ADMONI_PASSWORDSD:
+    if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALID_ADMIN_PASSWORDS:
         return 400, {}
 
     try:
