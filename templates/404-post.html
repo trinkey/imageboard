@@ -9,16 +9,8 @@
     </form>
   </p>
 
-  <a href="/submit/">Submit</a> - <a href="/">Home</a>
+  <a href="/tags/">All tags</a> - <a href="/submit/">Submit</a> - <a href="/">Home</a>
   <i class="spacing small"></i>
 
-  {% for tag in tags %}
-    <div>
-      <a href="/search?q={{ tag.tag }}">
-        ({{ tag.count }}) {{ tag.tag }}
-      </a>
-    </div>
-  {% empty %}
-    No tags have been created
-  {% endfor %}
+  <h1>This image is not found.</h1>
 {% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "/css/post.css" %}?v={{ VERSION }}">
+{% endblock %}
+
+{% block body %}
+  <p>
+    <form action="/search" class="left inline-block">
+      <input id="search" name="q" placeholder="Search..." autocomplete="off"><br>
+      <div id="search-after"></div>
+    </form>
+  </p>
+
+  <a href="/tags/">All tags</a> - <a href="/submit/">Submit</a> - <a href="/">Home</a>
+  <i class="spacing small"></i>
+
+  <div id="post-flex">
+    {% if post.ext == ".mp4" %}
+      <video data-animated src="{% static "/global/" %}{{ post.hash }}{{ post.ext }}"></video>
+    {% else %}
+      <img {% if post.ext == ".gif" %}data-animated{% endif %} src="{% static "/global/" %}{{ post.hash }}{{ post.ext }}">
+    {% endif %}
+
+    <div class="left">
+      Tags:
+      {% for tag in post.tags %}
+        <div>
+          <a href="/search?q={{ tag.tag }}">
+            ({{ tag.count }}) {{ tag.tag }}
+          </a>
+        </div>
+      {% empty %}
+        <br><i>None</i>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

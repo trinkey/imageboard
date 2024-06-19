@@ -6,6 +6,8 @@ import config
 import time
 import os
 
+from ..vars import Vars
+
 class DelTag(Schema):
     tags: list[str]
 
@@ -24,11 +26,11 @@ def get(request):
 
     if isinstance(post, UnderReview):
         def key(a):
-            return a["tag"]
+            return a["tag"].lower()
 
         return {
             "any": True,
-            "tags": sorted([{"tag": tag.tag, "count": len(tag.posts)} for tag in Tag.objects.all()], key=key),
+            "tags": sorted([{"tag": tag, "count": Vars.all_tags[tag]} for tag in Vars.all_tags], key=key),
             "post_info": {
                 "hash": post.file_hash,
                 "ext": post.file_extension
@@ -53,13 +55,17 @@ def remove(request, data: Remove):
     os.remove(config.IMAGE_SAVE_PATH / f"review/{data.hash}{obj.file_extension}")
     obj.delete()
 
-    return { "success": True }
+    return {
+        "success": True
+    }
 
 def del_tags(request, data: DelTag):
     if "token" not in request.COOKIES or request.COOKIES["token"] not in config.VALIDD_ADMONI_PASSWORDSD:
         return 400, {}
 
     for i in data.tags:
+        del Vars.all_tags[i]
+
         tag = Tag.objects.get(
             tag=i
         )
@@ -99,6 +105,8 @@ def approve(request, data: Approve):
 
                 tag.posts.append(data.hash)
                 tag.save()
+
+                Vars.all_tags[i] += 1
 
                 valid_tags.append(i)
 

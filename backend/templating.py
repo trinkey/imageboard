@@ -9,6 +9,8 @@ import config
 import random
 import hashlib
 
+from .vars import Vars
+
 CONTENT_TYPE_MAP = {
     "image/png": ".png",
     "image/jpeg": ".jpg",
@@ -17,13 +19,25 @@ CONTENT_TYPE_MAP = {
 }
 
 def render_template(request, file: str, **kwargs) -> HttpResponse:
+    def a(a):
+        return -a["count"], a["tag"]
+
+    output = []
+
+    for tag in Vars.all_tags:
+        output.append({
+            "tag": tag,
+            "count": Vars.all_tags[tag]
+        })
+
     context = {
         "NAME": config.SITE_NAME,
         "DESCRIPTION": config.SITE_DESCRIPTION,
         "TITLE": config.SITE_NAME,
 
         "VERSION": str(random.random()),
-        "TOTAL_POSTS": str(Image.objects.count())
+        "TOTAL_POSTS": str(Image.objects.count()),
+        "tags": sorted(output, key=a)
     }
 
     for key, val in kwargs.items():
@@ -103,6 +117,9 @@ def admin_page(request) -> HttpResponse:
                 Tag.objects.create(
                     tag=request.POST["tag"].lower().replace("+", "_").replace(" ", "_")
                 )
+
+                Vars.all_tags[request.POST["tag"].lower().replace("+", "_").replace(" ", "_")] = 0
+
             except IntegrityError:
                 ...
 
@@ -173,17 +190,20 @@ def search(request: WSGIRequest) -> HttpResponse:
         query=" ".join(query)
     )
 
-def tags(request: WSGIRequest) -> HttpResponse:
-    output = []
-
-    for i in Tag.objects.all().order_by("tag"):
-        output.append({
-            "tag": i.tag,
-            "count": len(i.posts)
-        })
+def post(request: WSGIRequest, hash: str) -> HttpResponse:
+    try:
+        post = Image.objects.get(file_hash=hash)
+    except Image.DoesNotExist:
+        return render_template(
+            request, "404-post.html"
+        )
 
     return render_template(
-        request, "tags.html",
+        request, "post.html",
 
-        tags=output
+        post={
+            "hash": post.file_hash,
+            "ext": post.file_extension,
+            "tags": [{"tag": tag, "count": Vars.all_tags[tag]} for tag in post.tags]
+        }
     )

@@ -1,0 +1,14 @@
+img,
+video {
+  max-height: 40em;
+  max-width: 90vw;
+  object-fit: contain;
+}
+
+#post-flex {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  gap: 5em 2em;
+  justify-content: center;
+}

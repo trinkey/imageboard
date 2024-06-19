@@ -8,10 +8,16 @@
     <link rel="stylesheet" href="{% static "/css/base.css" %}?v={{ VERSION }}">
     <link rel="icon" href="{% static "/img/favicon.ico" %}?v={{ VERSION }}" type="image/x-icon">
 
+    <script>
+      const tags = {% autoescape off %}{{ tags }}{% endautoescape %};
+    </script>
+
     {% block head %}{% endblock %}
   </head>
 
   <body>
     {% block body %}{% endblock %}
+
+    <script src="{% static "/js/search-suggestions.js" %}?v={{ VERSION }}"></script>
   </body>
 </html>

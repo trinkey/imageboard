@@ -7,10 +7,14 @@
 
 {% block body %}
   <p>
-    <form>
-      <input name="q" placeholder="Search..." value="{{ query }}">
+    <form action="/search" class="left inline-block">
+      <input id="search" name="q" placeholder="Search..." autocomplete="off"><br>
+      <div id="search-after"></div>
     </form>
   </p>
+
+  <a href="/tags/">All tags</a> - <a href="/submit/">Submit</a> - <a href="/">Home</a>
+  <i class="spacing small"></i>
 
   <div class="posts">
     {% for post in posts %}

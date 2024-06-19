@@ -31,6 +31,7 @@ body {
   background-color: var(--base);
   color: var(--text);
   font-family: sans-serif;
+  font-size: 16px;
   text-align: center;
   padding: 3vh 2vw;
 }
@@ -84,6 +85,10 @@ small {
   color: var(--subtext0);
 }
 
+i {
+  color: var(--subtext0);
+}
+
 .spacing {
   display: block;
   opacity: 0;
@@ -100,4 +105,41 @@ small {
 
 .spacing.large {
   height: 8em;
+}
+
+.left {
+  text-align: left;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+#search-after {
+  border: 1px solid var(--pink);
+  background-color: var(--mantle);
+  border-radius: 4px;
+  position: absolute;
+  display: none;
+  width: calc(12em - 2px);
+  z-index: 20;
+  translate: 0 3px;
+}
+
+#search:focus ~ #search-after:has(.search-suggestion),
+#search-after:hover:has(.search-suggestion) {
+  display: inline-block;
+}
+
+.search-suggestion {
+  padding: 4px 6px;
+  cursor: pointer;
+}
+
+.search-suggestion:hover {
+  background-color: var(--base);
+}
+
+.search-suggestion ~ .search-suggestion {
+  border-top: 1px solid var(--surface0);
 }
