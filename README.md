@@ -1,3 +1,6 @@
+> [!NOTE]  
+> This repository has been **migrated** to [git.gay](https://git.gay/trinkey/imageboard). The Github version will **no longer be maintained**.
+
 # imageboard
 its kinda cool i guess
 
